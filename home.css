@@ -1,0 +1,20 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 35px;
+    height: 70px;
+    background-color: lightgrey;
+}
+#menu ul{
+    list-style-type: none;
+    display: flex;
+    gap: 1em;
+}
+#menu ul li {
+    font-size: 20px;
+    cursor: pointer;
+}

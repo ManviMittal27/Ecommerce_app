@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <header>
+        <div id="Cname"> 
+            <h1>Company</h1>
+        </div>
+        <div id="menu">
+            <ul>
+                <li>Home</li>
+                <li>Services</li>
+                <li>About</li>
+                <li>Contact</li>
+            </ul>
+        </div>
+    </header>
+    
+    <main>
+        <div id="display" style="margin-top:25px;">
+            <table border="2" style="width: 100%;padding: 0 20px;">
+                <tr>
+                    <th colspan="6">Products</th>
+                </tr>
+            </table>
+            <table border="2" style="width: 100%;padding: 0 20px;" id="productContainer">
+                
+            </table>
+            <div style="width: 200px; margin: 5px auto;">
+                <button onclick="viewMore()">View More</button>
+                <button onclick="viewCart()">View Cart</button>
+            </div>
+        </div>
+    </main>
+
+    <div style="margin-left: 50px;"> <Button type="button" onclick="signout()"> SIGN OUT </Button></div><br>
+    <div style="margin-left: 50px;"> <Button type="button" onclick="emptycart()"> Empty Cart </Button></div>
+
+    <script src="home.js"></script>
+</body>
+</html>

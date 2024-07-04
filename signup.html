@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="width: 200px;margin: 50px auto;border: 2px solid black;padding: 5px;">
+        <form>
+            <h2 style="text-align: center;">Sign Up</h2>
+            <label for="user" style="font-size: 1em;"><b>UserName:</b> 
+            </label>
+            <input type="text" id="user" placeholder="USERNAME">
+            <br><br>
+            <label for="pass"style="font-size: 1em;"><b>Password:</b></label>
+            <input type="password" id="pass" placeholder="PASSWORD">
+            <br><br>
+            <button type="button" onclick="signup()">LOGIN</button>
+        </form>
+    </div>
+
+    <script>
+        var regarr = [];
+        var count = 1;
+
+        function signup(){
+            var user = document.getElementById("user").value;
+            var pass = document.getElementById("pass").value;
+
+            var obj = {
+                id : count,
+                username : user,
+                password : pass
+            }
+            regarr.push(obj);
+            count++;
+            storeLocalStorage();
+            window.location.href = "login.html";
+        }
+
+        function storeLocalStorage(){
+            localStorage.setItem("users",JSON.stringify(regarr));
+        }
+    </script>
+</body>
+</html>

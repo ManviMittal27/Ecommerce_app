@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+
+<body>
+    <h1>Shopping Cart</h1>
+    <table style="width: 100%;" border="1" id="cartTable">
+        <tr>
+            <th>ID</th>
+            <th>PRODUCT NAME</th>
+            <th>PRODUCT QUANTITY</th>
+            <th>PRODUCT PRICE</th>
+        </tr>
+    </table>
+
+    <script>
+        function displayCartItems() {
+            var id = 1;
+            var cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            if(cartItems.length == 0){
+                alert("No Products To Show...");
+            } else {
+                var cartList = document.getElementById("cartTable");
+                cartItems.forEach(item => {
+                    var row = document.createElement("tr");
+                    var pid = document.createElement("td");
+                    var name = document.createElement("td");
+                    var qty = document.createElement("td");
+                    var price = document.createElement("td");
+                    pid.innerText = id;
+                    name.innerText = item.name;
+                    qty.innerText = item.quantity;
+                    price.innerText = item.price;
+                    row.append(pid, name, qty, price);
+                    cartList.append(row);
+                    id++;
+                });
+            }
+        }
+        displayCartItems();
+    </script>
+</body>
+
+</html>

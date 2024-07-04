@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f3ec78, #af4261);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            text-align: center;
+            color: #555;
+        }
+        p a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        p a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
+        }
+        #app {
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .input_tr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .input_tr td {
+            padding: 5px;
+        }
+        #input {
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .updateForm {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .signout {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .signout button {
+            width: auto;
+            background-color: #ff4c4c;
+        }
+        .signout button:hover {
+            background-color: #ff3333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginForm" class="container">
+        <h2>Login</h2>
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" required>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" required>
+        <button type="button" onclick="login()">Login</button>
+        <p>Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="container hidden">
+        <h2>Sign Up</h2>
+        <label for="signupUsername">Username:</label>
+        <input type="text" id="signupUsername" required>
+        <label for="signupPassword">Password:</label>
+        <input type="password" id="signupPassword" required>
+        <button type="button" onclick="signup()">Sign Up</button>
+        <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="hidden">
+        <div class="container">
+            <div class="signout">
+                <button type="button" onclick="signout()">Sign Out</button>
+            </div>
+            <div>
+                <table id="input">
+                    <th colspan="2" style="font-size: 30px; text-align: center;">Inputs</th>
+                    <tr class="input_tr">
+                        <td>Product Name:</td>
+                        <td><input type="text" id="Pname" placeholder="Name"></td>
+                    </tr>
+                    <tr class="input_tr">
+                        <td>Product Quantity:</td>
+                        <td><input type="text" id="qtn" placeholder="Quantity"></td>
+                    </tr>
+                    <tr class="input_tr">
+                        <td>Price:</td>
+                        <td><input type="text" id="price" placeholder="Price"></td>
+                    </tr>
+                    <tr class="input_tr" colspan="2">
+                        <td colspan="2" style="text-align: center;"><button type="button" onclick="add()">Add Product</button></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="margin: 10px auto;">
+                <h3 style="text-align: center; font-size: 30px;">Products</h3>
+                <table id="product">
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Quantity</th>
+                        <th>Price</th>
+                        <th>Delete</th>
+                        <th>Update</th>
+                    </tr>
+                    <tbody id="productBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <form id="updateForm" class="updateForm hidden">
+                <h2>Update Form</h2>
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" required>
+                <label for="updateQuantity">Quantity:</label>
+                <input type="text" id="updateQuantity" required>
+                <label for="updatePrice">Price:</label>
+                <input type="text" id="updatePrice" required>
+                <input type="hidden" id="hiddenId">
+                <button type="button" onclick="updateData()">Update</button>
+            </form>
+
+            <h3 style="text-align: center; font-size: 30px;">Shopping Cart</h3>
+            <table id="cartTable">
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Product Quantity</th>
+                    <th>Product Price</th>
+                </tr>
+                <tbody id="cartBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let currentUser = localStorage.getItem("currentUser");
+        let products = JSON.parse(localStorage.getItem("cartItems")) || [];
+        let productId = products.length ? products[products.length - 1].id + 1 : 0;
+
+        function showLogin() {
+            document.getElementById("loginForm").classList.remove("hidden");
+            document.getElementById("signupForm").classList.add("hidden");
+        }
+
+        function showSignup() {
+            document.getElementById("loginForm").classList.add("hidden");
+            document.getElementById("signupForm").classList.remove("hidden");
+        }
+
+        function login() {
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                localStorage.setItem("currentUser", username);
+                currentUser = username;
+                showApp();
+            } else {
+                alert("Invalid username or password");
+            }
+        }
+
+        function signup() {
+            const username = document.getElementById("signupUsername").value;
+            const password = document.getElementById("signupPassword").value;
+
+            if (users.find(u => u.username === username)) {
+                alert("Username already exists");
+                return;
+            }
+
+            users.push({ username, password });
+            localStorage.setItem("users", JSON.stringify(users));
+            alert("Signup successful. Please login.");
+            showLogin();
+        }
+
+        function showApp() {
+            document.getElementById("loginForm").classList.add("hidden");
+            document.getElementById("signupForm").classList.add("hidden");
+            document.getElementById("app").classList.remove("hidden");
+            displayProducts();
+            displayCartItems();
+        }
+
+        function signout() {
+            localStorage.removeItem("currentUser");
+            currentUser = null;
+            document.getElementById("app").classList.add("hidden");
+            showLogin();
+        }
+
+        function add() {
+            let pname = document.getElementById("Pname").value;
+            let qtn = document.getElementById("qtn").value;
+            let price = document.getElementById("price").value;
+
+            if (pname && qtn && price) {
+                let product = {
+                    id: productId++,
+                    name: pname,
+                    quantity: qtn,
+                    price: price
+                };
+                products.push(product);
+                localStorage.setItem("cartItems", JSON.stringify(products));
+                displayProducts();
+                clearInputs();
+            }
+        }
+
+        function displayProducts() {
+            let productBody = document.getElementById("productBody");
+            productBody.innerHTML = "";
+
+            products.forEach(product => {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.quantity}</td>
+                    <td>${product.price}</td>
+                    <td><button onclick="deleteProduct(${product.id})">Delete</button></td>
+                    <td><button onclick="showUpdateForm(${product.id})">Update</button></td>
+                `;
+                productBody.appendChild(row);
+            });
+        }
+
+        function deleteProduct(id) {
+            products = products.filter(product => product.id !== id);
+            localStorage.setItem("cartItems", JSON.stringify(products));
+            displayProducts();
+        }
+
+        function showUpdateForm(id) {
+            let product = products.find(product => product.id === id);
+            document.getElementById("updateName").value = product.name;
+            document.getElementById("updateQuantity").value = product.quantity;
+            document.getElementById("updatePrice").value = product.price;
+            document.getElementById("hiddenId").value = product.id;
+            document.getElementById("updateForm").classList.remove("hidden");
+        }
+
+        function updateData() {
+            let id = document.getElementById("hiddenId").value;
+            let product = products.find(product => product.id == id);
+            product.name = document.getElementById("updateName").value;
+            product.quantity = document.getElementById("updateQuantity").value;
+            product.price = document.getElementById("updatePrice").value;
+            localStorage.setItem("cartItems", JSON.stringify(products));
+            document.getElementById("updateForm").classList.add("hidden");
+            displayProducts();
+        }
+
+        function clearInputs() {
+            document.getElementById("Pname").value = "";
+            document.getElementById("qtn").value = "";
+            document.getElementById("price").value = "";
+        }
+
+        function displayCartItems() {
+            let cartBody = document.getElementById("cartBody");
+            cartBody.innerHTML = "";
+
+            products.forEach((item, index) => {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price}</td>
+                `;
+                cartBody.appendChild(row);
+            });
+        }
+
+        window.onload = function() {
+            if (currentUser) {
+                showApp();
+            } else {
+                showLogin();
+            }
+        }
+    </script>
+</body>
+</html>

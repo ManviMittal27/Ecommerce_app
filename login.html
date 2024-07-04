@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="width: 200px;margin: 50px auto;border: 2px solid black;padding: 5px;">
+        <div>
+            <h2 style="text-align: center;">LOGIN</h2>
+            <label for="user" style="font-size: 1em;"><b>UserName:</b>
+            </label>
+            <input type="text" id="user" placeholder="USERNAME">
+            <br><br>
+            <label for="pass" style="font-size: 1em;"><b>Password:</b></label>
+            <input type="password" id="pass" placeholder="PASSWORD">
+            <br><br>
+            <button type="button" onclick="check()">LOGIN</button>
+        </div>
+    </div>
+
+    <script>
+        let log = [];
+
+        function check() {
+            var name = document.getElementById("user").value;
+            var pass = document.getElementById("pass").value;
+
+            let userdata = JSON.parse(localStorage.getItem("users"));
+            let found = false;
+
+            userdata.forEach(element => {
+                if (name === element.username && pass === element.password) {
+                    found = true;
+                    window.location.href = "home.html";
+                }
+            });
+
+            if (!found) {
+                window.location.href = "signup.html";
+            }
+            var logobj = {
+                username : name,
+                password : pass
+            }
+            log.push(logobj);
+            local();
+            window.location.href="Home.html";
+        }
+
+        function local(){
+            localStorage.setItem("logdata",JSON.stringify(log));
+        }
+    </script>
+</body>
+
+</html>

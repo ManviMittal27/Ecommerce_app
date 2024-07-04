@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        /* Add your existing CSS styles here */
+        #input {
+            border: 2px solid black;
+            padding: 3px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input_tr {
+            padding: 2px;
+        }
+        #product {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #product th, #product td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        #updateForm {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f0f0f0;
+            padding: 20px;
+            border: 1px solid black;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #updateForm label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        #updateForm input[type="text"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+        }
+        #updateForm button[type="button"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #updateForm button[type="button"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div style="height: 300px; width: 300px; margin: 0 auto;">
+        <table id="input">
+            <thead>
+                <tr>
+                    <th colspan="2" style="font-size: 30px;">Inputs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="input_tr">
+                    <td>Product Name: </td>
+                    <td><input type="text" id="Pname" placeholder="Name"></td>
+                </tr>
+                <tr class="input_tr">
+                    <td>Product Quantity: </td>
+                    <td><input type="text" id="qtn" placeholder="Quantity"></td>
+                </tr>
+                <tr class="input_tr">
+                    <td>Price: </td>
+                    <td><input type="text" id="price" placeholder="Price"></td>
+                </tr>
+                <tr class="input_tr" colspan="2" style="margin: 0 auto;">
+                    <td><button type="button" onclick="add()">Add Product</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin: 10px auto;">
+        <h3 style="text-align: center;font-size: 30px;">Products</h3>
+        <table id="product" border="2" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Quantity</th>
+                    <th>Price</th>
+                    <th>Delete</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody id="productBody">
+            </tbody>
+        </table>
+    </div>
+    <br><br><br>
+    <form id="updateForm">
+        <h2>Update Form</h2>
+        <label for="updateName">Name:</label>
+        <input type="text" id="updateName" required><br>
+        <label for="updateQuantity">Quantity:</label>
+        <input type="text" id="updateQuantity" required><br>
+        <label for="updatePrice">Price:</label>
+        <input type="text" id="updatePrice" required><br>
+        <input type="hidden" id="hiddenId">
+        <button type="button" onclick="updateData()">Update</button>
+    </form>
+
+    <script>
+        let products = [];
+        let productId = 0;
+
+        function add() {
+            let pname = document.getElementById("Pname").value;
+            let qtn = document.getElementById("qtn").value;
+            let price = document.getElementById("price").value;
+
+            if (pname && qtn && price) {
+                let product = {
+                    id: productId++,
+                    name: pname,
+                    quantity: qtn,
+                    price: price
+                };
+                products.push(product);
+                saveToLocalStorage(product);
+                displayProducts();
+                clearInputs();
+            } else {
+                alert("Please fill in all fields");
+            }
+        }
+
+        function saveToLocalStorage(product) {
+            let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            cartItems.push(product);
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        }
+
+        function displayProducts() {
+            let productBody = document.getElementById("productBody");
+            productBody.innerHTML = "";
+            products.forEach(product => {
+                let row = `<tr>
+                    <td>${product.name}</td>
+                    <td>${product.quantity}</td>
+                    <td>${product.price}</td>
+                    <td><button onclick="deleteProduct(${product.id})">Delete</button></td>
+                    <td><button onclick="showUpdateForm(${product.id})">Update</button></td>
+                </tr>`;
+                productBody.innerHTML += row;
+            });
+        }
+
+        function clearInputs() {
+            document.getElementById("Pname").value = "";
+            document.getElementById("qtn").value = "";
+            document.getElementById("price").value = "";
+        }
+
+        function deleteProduct(id) {
+            products = products.filter(product => product.id !== id);
+            displayProducts();
+        }
+
+        function showUpdateForm(id) {
+            let product = products.find(product => product.id === id);
+            document.getElementById("updateName").value = product.name;
+            document.getElementById("updateQuantity").value = product.quantity;
+            document.getElementById("updatePrice").value = product.price;
+            document.getElementById("hiddenId").value = product.id;
+            document.getElementById("updateForm").style.display = "block";
+        }
+
+        function updateData() {
+            let id = document.getElementById("hiddenId").value;
+            let name = document.getElementById("updateName").value;
+            let quantity = document.getElementById("updateQuantity").value;
+            let price = document.getElementById("updatePrice").value;
+
+            let product = products.find(product => product.id == id);
+            product.name = name;
+            product.quantity = quantity;
+            product.price = price;
+
+            displayProducts();
+            document.getElementById("updateForm").style.display = "none";
+        }
+    </script>
+</body>
+</html>
